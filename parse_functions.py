@@ -102,7 +102,7 @@ def parse_sonography(intext=''):
             elif '钙化' in detail_info:
                 info_data['钙化'] = detail_info
             #后方回声
-            elif '后方回声' in detail_info:
+            elif any(word in detail_info for word in ['后方回声','后方伴声衰减']): 
                 info_data['后方回声'] = detail_info
             #内部回声  
             elif '内部' in detail_info:
