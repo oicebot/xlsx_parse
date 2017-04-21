@@ -64,7 +64,9 @@ def parse_sonography(intext=''):
         sizes = []  #鉴于有可能一句话描述多个不同的尺寸，先建一个数组
         positions = []
         describes = []
-        
+        describe_text = ''
+        pos_text = ''
+        size_text = ''
         
         for detail_info in info_list:
             #综合描述
@@ -75,8 +77,9 @@ def parse_sonography(intext=''):
             if '点钟' in detail_info or '副乳内' in detail_info:
                 pos1 = detail_info.find('可见')
                 pos2 = detail_info.find('大小')
-                pos = min([n for n in [pos1,pos2] if n>0]) #取两者之间大于零的数字中较小的那个
-                pos_text = detail_info[:pos]  #裁掉后面一段
+                if pos1 > 0 or pos2 > 0:
+                    pos = min([n for n in [pos1,pos2] if n>0]) #取两者之间大于零的数字中较小的那个
+                    pos_text = detail_info[:pos]  #裁掉后面一段
 
             #大小
             if '大小' in detail_info or all(a in detail_info for a in ['约','×','mm']):
