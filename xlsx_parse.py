@@ -18,6 +18,15 @@ table_title=['编号','姓名','年龄','住院号',
              ]
 
 def create_rows(indata_sheet):
+    '''
+    备注： indata_sheet的表头结构：
+    0    1    2    3    4      5        6    7    8          9
+    编号 姓名 性别 年龄 住院号 检查时间 病史 化疗 M-超声描述 M-超声诊断
+      10         11           12       13       14      15       16        17       18       19
+    M-穿刺病理 M-穿刺免疫组化 钼靶描述 钼靶诊断 MRI描述 MRI诊断 手术名称 手术过程 术中冰冻 石蜡病理
+
+    '''
+    
     global table_title
     row_objs = [] 
     
@@ -69,7 +78,7 @@ if __name__ == '__main__':
             print('打开失败……', errinfo)
             SheetID = 'A'
         else:
-            print('已打开 {}，解析中…'.format(indata_sheet.title))
+            print('已打开表：“{}”，解析中…'.format(indata_sheet.title))
             
     
     outtable= [ table_title, ]
