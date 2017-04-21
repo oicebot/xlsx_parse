@@ -74,17 +74,28 @@ def parse_sonography(intext=''):
                 describe_text = detail_info
                
             #位置
-            if '点钟' in detail_info or '副乳内' in detail_info:
+            if any(a in detail_info for a in ['点钟','副乳内','侧象限']):
                 pos1 = detail_info.find('可见')
                 pos2 = detail_info.find('大小')
-                if pos1 > 0 or pos2 > 0:
-                    pos = min([n for n in [pos1,pos2] if n>0]) #取两者之间大于零的数字中较小的那个
+                pos3 = detail_info.find('方向')
+                if pos3 > 0:
+                    pos3 += 2
+                if any(a > 0 for a in [pos1,pos2,pos3]):
+                    pos = min([n for n in [pos1,pos2,pos3] if n>0]) #取两者之间大于零的数字中较小的那个
                     pos_text = detail_info[:pos]  #裁掉后面一段
+                else:
+                    pos_text = detail_info          #找不到，自暴自弃，不裁剪了
 
             #大小
-            if '大小' in detail_info or all(a in detail_info for a in ['约','×','mm']):
-                pos = detail_info.find('大小')
-                size_text = detail_info[pos:]    #裁去前面部分 
+            if '大小' in detail_info or all(a in detail_info for a in ['×','mm']):
+                pos1 = detail_info.find('大小')
+                pos2 = detail_info.find('范围')
+                if pos1 > 0 or pos2 > 0:
+                    pos = min([n for n in [pos1,pos2] if n>0]) 
+                    size_text = detail_info[pos:]    #裁去前面部分
+                else:
+                    size_text = detail_info          #找不到，自暴自弃，不裁剪了
+
                 describes.append(describe_text)  #将当前描述加入数组
                 positions.append(pos_text)       #将当前位置加入数组
                 sizes.append(size_text)          #将当前尺寸加入数组
@@ -101,15 +112,16 @@ def parse_sonography(intext=''):
             #边缘
             elif ('边缘' in detail_info or '边界' in detail_info ) and (not '可见' in detail_info) and (not 'CDFI' in detail_info):
                 info_data['边缘'] = detail_info
-            #钙化
-            elif '钙化' in detail_info:
-                info_data['钙化'] = detail_info
             #后方回声
             elif any(word in detail_info for word in ['后方回声','后方伴声衰减']): 
                 info_data['后方回声'] = detail_info
             #内部回声  
             elif '内部' in detail_info:
                 info_data['内部回声'] = detail_info
+            #钙化
+            elif any(a in detail_info for a in['钙化','状强回声',]):
+                info_data['钙化'] = detail_info
+
 
         for i in range(len(positions)):
             #有多个值的时候，就生成多个位置、大小不同，但其他描述共享的字典对象
@@ -124,7 +136,7 @@ def parse_sonography(intext=''):
     
 if __name__ == '__main__':
     #改成从文件中读取，你可以试着把超声检查的内容复制到文本文件中测试
-    testdata_file = open("5人份testdata.txt") 
+    testdata_file = open('testdata.txt',encoding="utf-8")
     #读取整个文件中的内容
     testdata = testdata_file.read()
         
