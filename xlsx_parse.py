@@ -14,7 +14,7 @@ from parse_functions import parse_sonography
 
 table_title=['编号','姓名','年龄','住院号',
              '描述','位置','大小','形态','生长方向',
-             '边缘','分布','内部回声','钙化','后方回声',
+             '边缘','分布','内部回声','钙化','后方回声','CDFI'
              ]
 
 def create_rows(indata_sheet):

@@ -59,7 +59,9 @@ def parse_sonography(intext=''):
                      '分布':'',
                      '内部回声':'',
                      '钙化':'',
-                     '后方回声':'', }
+                     '后方回声':'',
+                     'CDFI':'',
+                     }
                      
         sizes = []  #鉴于有可能一句话描述多个不同的尺寸，先建一个数组
         positions = []
@@ -110,7 +112,7 @@ def parse_sonography(intext=''):
             elif '分布' in detail_info:
                 info_data['分布'] = detail_info
             #边缘
-            elif ('边缘' in detail_info or '边界' in detail_info ) and (not '可见' in detail_info) and (not 'CDFI' in detail_info):
+            elif any(a in detail_info for a in ['边缘','边界']) and (not any( a in detail_info for a in ['可见','CDFI','边缘型'])):
                 info_data['边缘'] = detail_info
             #后方回声
             elif any(word in detail_info for word in ['后方回声','后方伴声衰减']): 
@@ -121,6 +123,9 @@ def parse_sonography(intext=''):
             #钙化
             elif any(a in detail_info for a in['钙化','状强回声',]):
                 info_data['钙化'] = detail_info
+            #CDFI
+            elif 'CDFI' in detail_info and '血流' in detail_info:
+                info_data['CDFI'] = detail_info
 
 
         for i in range(len(positions)):
@@ -155,6 +160,7 @@ if __name__ == '__main__':
         print('内部回声：' + i['内部回声'])
         print('钙化：' + i['钙化'])
         print('后方回声：' + i['后方回声'])
+        print('CDFI：' + i['CDFI'])
         index += 1
         
 #运行方法，用 Python IDLE 打开，按 F5 运行
