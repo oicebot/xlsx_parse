@@ -40,6 +40,9 @@ def parse_pathology(intext='',div='$',replace_data='',outputemptyvalue=True):
     for detail_info in full_text:
         tokens = str(detail_info)
         tokens = tokens.split("[")[1:]
+        
+        if tokens == []:
+            continue    #跳过完全不含有 [ 的字符串
 
         info_data = {}  #初始化一个空字典
         if outputemptyvalue:
