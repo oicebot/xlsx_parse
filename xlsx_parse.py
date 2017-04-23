@@ -148,7 +148,7 @@ if __name__ == '__main__':
         if line_index < len(data2):
             #第一行标题续后，之后只有编号相同的续上
             if line_index == 0 or data2[line_index][0] == outrow[0]:
-                outrow.extend(data2[line_index][5:])  #跳过 '编号','姓名','年龄','住院号',
+                outrow.extend(data2[line_index][4:])  #跳过 '编号','姓名','年龄','住院号',
                 line_index += 1
         
         ws.append(outrow)
