@@ -16,14 +16,16 @@ pip install openpyxl
  等待自动安装完毕即可（不知需不需要科学上网）
 
 
-
-###Table of Contents
+####Table of Contents
 
    * [xlsx 影像诊断结果分析脚本](#xlsx-影像诊断结果分析脚本)
+            * [<g-emoji alias="information_source" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/2139.png" ios-version="6.0">ℹ️</g-emoji> <strong>依赖</strong>：](#information_source-依赖)
       * [想法1：字符串分割及分析](#想法1字符串分割及分析)
-            * [<i></i> parse_functions.py](#-parse_functionspy)
-            * [<i></i> xlsx_parse.py](#-xlsx_parsepy)
+            * parse_functions.py
+            * xlsx_parse.py
       * [想法2：利用语义识别](#想法2利用语义识别)
+
+Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 -----
 
@@ -37,13 +39,16 @@ pip install openpyxl
 文件中包含4个处理函数：
 
 * :hash: **parse_sonography()** ： 处理超声描述
+ * 提取具体超声下的各类描述，并分类。
  * 输入字符串，输出一个 `list` ，元素数量为发现的病灶个数，每个元素是一个 `dict` 
 * :hash: **parse_sonography_result()** ：处理超声诊断结果
  * //TODO: 提取诊断结果 `US-Birads` 等级
 * :hash: **parse_operation()** ：处理手术过程
  * //TODO: 提取手术过程切了些什么
 * :hash: **parse_pathology()** ：处理病理分析
- * //TODO: 提取分析结果是什么细胞
+ * 提取分析结果是什么细胞，并将结果分类输出
+ * 由大锤充当NLP核心，人工标记后由软件自动输出。
+ * 简写：{ 'wz':'位置','dx':'定性','fj':'分级','dz':'单发/多灶','bs':'伴随病变的情况','lj':'累及周围组织情况','ln':'淋巴结转移情况' }
 
 #### :page_facing_up: xlsx_parse.py
 
