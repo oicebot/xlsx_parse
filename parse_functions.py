@@ -115,7 +115,7 @@ def parse_sonography(intext=''):
             elif any(a in detail_info for a in ['边缘','边界']) and (not any( a in detail_info for a in ['可见','CDFI','边缘型'])):
                 info_data['边缘'] = detail_info
             #后方回声
-            elif any(word in detail_info for word in ['后方回声','后方伴声衰减']): 
+            elif any(word in detail_info for word in ['后方回声','后方伴声衰减','后方伴回声增强']): 
                 info_data['后方回声'] = detail_info
             #内部回声  
             elif '内部' in detail_info:
