@@ -21,11 +21,47 @@ def parse_operation(intext=''):
     #TODO：提取手术过程切了些什么
     
     
-def parse_pathology(intext=''):
+def parse_pathology(intext='',div='$',replace_data='',outputemptyvalue=True):
+    '''
+    函数功能：提取分析结果是什么细胞
+    接受4个参数： intext 是需处理的字符串本身， div 是分割多个诊断字符串的标记(可选)
+                          replace_data 是替换的标记及其对应的全称(可选)，
+                          outputemptyvalue 是否吐空值(可选)，默认”是“
+    '''
     intext = intext.replace('\n',' ')    #先把所有回车替换成空格。
-    full_text=intext.split('。')         #将整个字符串用句号分割开，每个句子变成数组里的一个元素
+    full_text=intext.split(div)         #将整个字符串用 div 分割开，每个元素中将包含一个完整的病理诊断描述
+        
+    if not replace_data:
+        #默认的替换标记及对应的全称
+        replace_data = {'wz':'位置','dx':'定性','fj':'分级','dz':'单发/多灶','bs':'伴随病变的情况','lj':'累及周围组织情况','ln':'淋巴结转移情况'}
+        
+    output_list = []
+        
+    for detail_info in full_text:
+        tokens = str(detail_info)
+        tokens = tokens.split("[")[1:]
+
+        info_data = {}  #初始化一个空字典
+        if outputemptyvalue:
+            for k,j in replace_data.items(): #为输出空值，则应先初始化空字典的值
+                info_data[j] = ''  #字典的 key 来自替换标记的全称
+        
+        for tok in tokens:
+            if tok:
+                info_token = tok.split("]")[0]
+                tag = info_token.split(" ")[0]
+                try:
+                    describe_name = replace_data[tag]
+                except KeyError:
+                    raise RuntimeError('没找到能用的tag啊！')
+                else:
+                    describe_text = ' '.join(info_token.split(" ")[1:])
+                    info_data[describe_name] = describe_text
+                    
+        output_list.append(info_data)
+        
+    return output_list
     
-    #TODO：提取分析结果是什么细胞
 
 def parse_sonography(intext=''):
     intext = intext.replace('\n',' ')    #先把所有回车替换成空格。
@@ -48,7 +84,7 @@ def parse_sonography(intext=''):
         
         info_list = each_tumor.split('，') #先将句子用逗号分隔成一串短语
         
-        #构建一个字典，描述就是句子的第一个小分句  info_list[0] 相当于 数组 info_list 的第0个元素
+        #构建一个字典
         
         info_data = {'描述':'',
                      '位置':'',
@@ -140,7 +176,9 @@ def parse_sonography(intext=''):
     
     
 if __name__ == '__main__':
+    #测试 parse_sonography
     #改成从文件中读取，你可以试着把超声检查的内容复制到文本文件中测试
+    '''  
     testdata_file = open('testdata.txt',encoding="utf-8")
     #读取整个文件中的内容
     testdata = testdata_file.read()
@@ -162,8 +200,23 @@ if __name__ == '__main__':
         print('后方回声：' + i['后方回声'])
         print('CDFI：' + i['CDFI'])
         index += 1
-        
-#运行方法，用 Python IDLE 打开，按 F5 运行
+    '''
+    #测试 parse_pathology
+
+    testdata_file = open('test_pathology.txt',encoding="utf-8")
+
+    testdata = testdata_file.read()
+
+    index = 0
+
+    result = parse_pathology(testdata)
+
+    for i in result:
+        print('-----',index,'-----')
+        for k,y in i.items():
+            print("{} : {}".format(k,y))
+
+        index += 1
         
 
 
