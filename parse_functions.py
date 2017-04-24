@@ -115,7 +115,7 @@ def parse_sonography(intext=''):
                 describe_text = detail_info
                
             #位置
-            if any(a in detail_info for a in ['点钟','副乳内','侧象限']):
+            if any(a in detail_info for a in ['点钟','副乳内','侧象限']) and (not 'CDFI' in detail_info):
                 pos1 = detail_info.find('可见')
                 pos2 = detail_info.find('大小')
                 pos3 = detail_info.find('方向')
@@ -147,8 +147,8 @@ def parse_sonography(intext=''):
             #生长方向
             elif '生长' in detail_info:
                 info_data['生长方向'] = detail_info
-            #边界
-            elif '分布' in detail_info:
+            #分布
+            elif '分布' in detail_info and (not 'CDFI' in detail_info):
                 info_data['分布'] = detail_info
             #边缘
             elif any(a in detail_info for a in ['边缘','边界']) and (not any( a in detail_info for a in ['可见','CDFI','边缘型'])):
@@ -157,7 +157,7 @@ def parse_sonography(intext=''):
             elif any(word in detail_info for word in ['后方回声','后方伴声衰减','后方伴回声增强']): 
                 info_data['后方回声'] = detail_info
             #内部回声  
-            elif '内部' in detail_info:
+            elif '内部' in detail_info and (not 'CDFI' in detail_info):
                 info_data['内部回声'] = detail_info
             #钙化
             elif any(a in detail_info for a in['钙化','状强回声',]):
