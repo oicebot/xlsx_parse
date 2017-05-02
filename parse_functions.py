@@ -115,7 +115,7 @@ def parse_sonography(intext=''):
                 describe_text = detail_info
                
             #位置
-            if any(a in detail_info for a in ['点钟','副乳内','侧象限']) and (not 'CDFI' in detail_info):
+            if any(a in detail_info for a in ['点钟','副乳内','侧象限','腋下','腋窝']) and (not 'CDFI' in detail_info):
                 pos1 = detail_info.find('可见')
                 pos2 = detail_info.find('大小')
                 pos3 = detail_info.find('方向')
@@ -126,6 +126,10 @@ def parse_sonography(intext=''):
                     pos_text = detail_info[:pos]  #裁掉后面一段
                 else:
                     pos_text = detail_info          #找不到，自暴自弃，不裁剪了
+
+                if any(a in pos_text for a in ['腋窝','锁骨','腋下','副乳']):
+                    pos_text = '@' + pos_text     #此类描述则在位置前面加一个标记方便筛选
+
 
             #大小
             if '大小' in detail_info or all(a in detail_info for a in ['×','mm']):
