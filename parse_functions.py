@@ -93,7 +93,7 @@ def parse_sonography(intext=''):
     
     output_list = []
     for each_tumor in tumor_info:
-        
+        each_tumor = each_tumor.replace(',','，') #半角逗号改成全角逗号
         info_list = each_tumor.split('，') #先将句子用逗号分隔成一串短语
         
         #构建一个字典
