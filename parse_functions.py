@@ -30,12 +30,13 @@ def parse_pathology(intext='',div='$',replace_data='',outputemptyvalue=True):
     '''
     intext = intext.replace('\n',' ')    #先把所有回车替换成空格。
     full_text=intext.split(div)         #将整个字符串用 div 分割开，每个元素中将包含一个完整的病理诊断描述
+    wz_number = intext.count("wz")      #先算出来这一段有几个位置……
         
     if not replace_data:
         #默认的替换标记及对应的全称
         replace_data = {'wz':'位置','dx':'定性','fj':'分级','dz':'单发/多灶','bs':'伴随病变的情况','lj':'累及周围组织情况','ln':'淋巴结转移情况'}
         
-    output_list = []
+    output_list = list(" " * wz_number) #init new list with item numbers same as [wz] tag
         
     for detail_info in full_text:
         tokens = str(detail_info)
@@ -49,10 +50,15 @@ def parse_pathology(intext='',div='$',replace_data='',outputemptyvalue=True):
             for k,j in replace_data.items(): #为输出空值，则应先初始化空字典的值
                 info_data[j] = ''  #字典的 key 来自替换标记的全称
         
+        insert_pos = -1  #default insert point is the last
+
         for tok in tokens:
             if tok:
                 info_token = tok.split("]")[0]
                 tag = info_token.split(" ")[0]
+                if tag[-1].isdigit():
+                    insert_pos = int(tag[-1])  #adjust insert point
+                    tag = tag[:-1]
                 try:
                     describe_name = replace_data[tag]
                 except KeyError:
@@ -60,10 +66,13 @@ def parse_pathology(intext='',div='$',replace_data='',outputemptyvalue=True):
                 else:
                     describe_text = ' '.join(info_token.split(" ")[1:])
                     info_data[describe_name] = describe_text
-                    
-        output_list.append(info_data)
+
+        if insert_pos >= 0:
+            output_list.insert(insert_pos,info_data)  #insert item in pos
+        else:
+            output_list.append(info_data)
         
-    return output_list
+    return [i for i in output_list if i != ' ']  #strip the empty list element
     
 
 def parse_sonography(intext=''):
