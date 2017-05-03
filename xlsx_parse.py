@@ -149,8 +149,7 @@ if __name__ == '__main__':
         if line_index < len(data2):
             #第一行标题续后，之后只有编号相同的续上
             if line_index == 0 or data2[line_index][0] == outrow[0]:
-                outrow.append(" ".join(data2[line_index][3:5])) #'住院号','位置'  #do not contain [5]
-                outrow.extend(data2[line_index][5:]) #跳过 '编号','姓名','年龄','住院号','位置'
+                outrow.extend(data2[line_index][4:]) #跳过 '编号','姓名','年龄','住院号',
                 line_index += 1
             #//TODO: 倘若描述数据比病理诊断还少，将会出现严重故障，下面是一个尝试性修复：
             elif data2[line_index][0] <= outrow[0]:
@@ -161,8 +160,7 @@ if __name__ == '__main__':
                     line_index += 1
                 '''
                 outrow = list(" " * 15)                   #前15列内容为空
-                outrow.append(" ".join(data2[line_index][3:5])) #'住院号','位置'  #do not contain [5]
-                outrow.extend(data2[line_index][5:])  #跳过 '编号','姓名','年龄','住院号','位置'
+                outrow.extend(data2[line_index][4:])  #跳过 '编号','姓名','年龄','住院号',
                 line_index += 1
             #//TODO: 石蜡病理的数量少，空行用住院号填入
             else:
