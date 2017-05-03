@@ -162,6 +162,9 @@ if __name__ == '__main__':
                 outrow = list(" " * 15)                   #前15列内容为空
                 outrow.extend(data2[line_index][4:])  #跳过 '编号','姓名','年龄','住院号',
                 line_index += 1
+            #//TODO: 石蜡病理的数量少，空行用住院号填入
+            else:
+                outrow.append(str(row[3]))
         
         ws.append(outrow)
         lastrow=list(outrow)  #保存之前处理过的行
