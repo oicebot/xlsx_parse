@@ -153,10 +153,15 @@ if __name__ == '__main__':
                 line_index += 1
             #//TODO: 倘若描述数据比病理诊断还少，将会出现严重故障，下面是一个尝试性修复：
             elif data2[line_index][0] <= outrow[0]:
+                '''                                       #uncomment these if you want to copy the data in last line
                 if lastrow:                               #试着把上一行的前面几列复制过来，前提是上一行不为空，否则可能会出错
                     outrow = lastrow[:15]                 #复制前15列内容
                     outrow.extend(data2[line_index][4:])  #跳过 '编号','姓名','年龄','住院号',
                     line_index += 1
+                '''
+                outrow = list(" " * 15)                   #前15列内容为空
+                outrow.extend(data2[line_index][4:])  #跳过 '编号','姓名','年龄','住院号',
+                line_index += 1
         
         ws.append(outrow)
         lastrow=list(outrow)  #保存之前处理过的行
