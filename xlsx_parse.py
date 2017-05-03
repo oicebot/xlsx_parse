@@ -184,7 +184,8 @@ if __name__ == '__main__':
                     line_index += 1
                 '''
                 while data2[line_index][0] < outrow[0]:
-                    addrow = list(" " * 15)                   #前15列内容为空
+                    addrow = list(lastrow[:4])                      #前4列还是塞进去
+                    addrow.extend(list(" " * 11))                   #塞入11列空格
                     addrow.extend(data2[line_index][4:])  #跳过 '编号','姓名','年龄','住院号',
                     ws.append(addrow)
                     line_index += 1
