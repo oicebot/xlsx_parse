@@ -194,15 +194,13 @@ def parse_sonography(intext=''):
 if __name__ == '__main__':
     #测试 parse_sonography
     #改成从文件中读取，你可以试着把超声检查的内容复制到文本文件中测试
-    '''  
     testdata_file = open('testdata.txt',encoding="utf-8")
     #读取整个文件中的内容
     testdata = testdata_file.read()
         
     index = 0
-    
+    print('1) parse_sonography: -----------------')    
     for i in parse_sonography(testdata):
-        
         print('-----',index,'-----')
         print('描述：' + i['描述'])
         print('位置：' + i['位置'])
@@ -216,7 +214,7 @@ if __name__ == '__main__':
         print('后方回声：' + i['后方回声'])
         print('CDFI：' + i['CDFI'])
         index += 1
-    '''
+
     #测试 parse_pathology
 
     testdata_file = open('test_pathology.txt',encoding="utf-8")
@@ -226,7 +224,7 @@ if __name__ == '__main__':
     index = 0
 
     result = parse_pathology(testdata)
-
+    print('2) parse_pathology: -----------------')
     for i in result:
         print('-----',index,'-----')
         for k,y in i.items():
