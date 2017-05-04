@@ -137,7 +137,7 @@ if __name__ == '__main__':
     '''
             
     data1 = add_rows_to_table('描述数据', table_title, indata_sheet, col=8, mtd='sonography',)
-    data2 = add_rows_to_table('病理诊断', table2_title, indata_sheet, col=28, mtd='pathology', tstrange=6, )
+    data2 = add_rows_to_table('病理诊断', table2_title, indata_sheet, col=28, mtd='pathology', tstrange=10, )
 
     wb = Workbook()
     ws = wb.active
@@ -150,46 +150,15 @@ if __name__ == '__main__':
         outrow = list(row)
         if line_index < len(data2):
             #第一行标题续后，之后只有编号相同的续上
-            if line_index == 0 or data2[line_index][0] == outrow[0]:
-                if line_index > 0:                              #Exclude 1st/title row
-                    if outrow[0] != current_ID:                 #Only change cache when meet new ID
-                        current_ID = data2[line_index][0]       #cache current ID '编号'
-                        #cache current side
-                        if all(i in data2[line_index][4] for i in ['左','右']):
-                            current_side = 2
-                        elif '左' in data2[line_index][4]:
-                            current_side = 0
-                        elif '右' in data2[line_index][4]:
-                            current_side = 1
-                        else:
-                            current_side = -1
+            if line_index == 0 or data2[line_index][0] <= outrow[0]:
 
-                    if current_side != 2:                        #if both sides exist, then do nothing
-                        if ('左' in outrow[4] and current_side == 0) or ('右' in outrow[4] and current_side == 1):
-                            outrow.append(data2[line_index][4])
-                        else:
-                            outrow.append(str(data2[line_index][4]) + '【卧槽】')
-                else:
-                    outrow.append('位置')
-
-                outrow.extend(data2[line_index][5:]) #跳过 '编号','姓名','年龄','住院号','位置'
-
-                line_index += 1
-            #//TODO: 倘若描述数据比病理诊断还少，将会出现严重故障，下面是一个尝试性修复：
-            elif data2[line_index][0] < outrow[0]:
-                '''                                       #uncomment these if you want to copy the data in last line
-                if lastrow:                               #试着把上一行的前面几列复制过来，前提是上一行不为空，否则可能会出错
-                    outrow = lastrow[:15]                 #复制前15列内容
-                    outrow.extend(data2[line_index][4:])  #跳过 '编号','姓名','年龄','住院号',
-                    line_index += 1
-                '''
-                while data2[line_index][0] < outrow[0]:
+                while data2[line_index][0] < outrow[0]:             #如果切出来的东西比较多，就要塞空行进去
                     addrow = list(lastrow[:4])                      #前4列还是塞进去
                     addrow.extend(list(" " * 11))                   #塞入11列空格
                     addrow.extend(data2[line_index][4:])  #跳过 '编号','姓名','年龄','住院号',
                     ws.append(addrow)
                     line_index += 1
-                #//TODO: Fatal ERROR here, forgot to re-add the current outrow info into table!!!
+
                 if line_index > 0:                              #Exclude 1st/title row
                     if outrow[0] != current_ID:                 #Only change cache when meet new ID
                         current_ID = data2[line_index][0]       #cache current ID '编号'
@@ -203,11 +172,15 @@ if __name__ == '__main__':
                         else:
                             current_side = -1
 
-                    if current_side != 2:                        #if both sides exist, then do nothing
-                        if ('左' in outrow[4] and current_side == 0) or ('右' in outrow[4] and current_side == 1):
-                            outrow.append(data2[line_index][4])
-                        else:
-                            outrow.append(str(data2[line_index][4]) + '【卧槽】')
+                    compare_info = data2[line_index][4]
+                    #if both sides exist, or left and right compared, then do nothing
+                    if current_side == 2 or ('左' in outrow[4] and current_side == 0) or ('右' in outrow[4] and current_side == 1):
+                        pass
+                    else:
+                        compare_info = compare_info + '【卧槽】'
+
+                    outrow.append(compare_info)
+
                 else:
                     outrow.append('位置')
 
@@ -217,11 +190,14 @@ if __name__ == '__main__':
 
             #//TODO: 石蜡病理的数量少， insert 【卧槽】 info
             else:
-                if current_side != 2:                        #if both sides exist, then do nothing
-                    if ('左' in outrow[4] and current_side == 0) or ('右' in outrow[4] and current_side == 1):
-                        outrow.append(data2[line_index][4])
-                    else:
-                        outrow.append(str(data2[line_index][4]) + '【卧槽】')
+                compare_info = "" #data2[line_index][4]
+                #if both sides exist, or left and right compared, then do nothing
+                if current_side == 2 or ('左' in outrow[4] and current_side == 0) or ('右' in outrow[4] and current_side == 1):
+                    pass
+                else:
+                    compare_info = compare_info + '【卧槽】'
+
+                outrow.append(compare_info)
         
         ws.append(outrow)
         lastrow=list(outrow)  #保存之前处理过的行
