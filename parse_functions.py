@@ -102,6 +102,7 @@ def parse_sonography(intext=''):
                      '位置':'',
                      '大小':'',
                      '形态':'',
+                     '腺管':'',
                      '生长方向':'',
                      '边缘':'',
                      '分布':'',
@@ -157,6 +158,9 @@ def parse_sonography(intext=''):
             #形态            
             elif '呈' in detail_info and '形' in detail_info:
                 info_data['形态'] = detail_info
+            #腺管扩张情况，寻找描述里有无乳腺导管扩张的相关描述，可能表述为腺管扩张，也可能表述为导管扩张
+            elif any(word in detail_info for word in ['腺管扩张','导管扩张','腺管局部扩张','导管局部扩张','局部扩张导管']): 
+                info_data['腺管'] = detail_info
             #生长方向
             elif '生长' in detail_info:
                 info_data['生长方向'] = detail_info
@@ -206,6 +210,7 @@ if __name__ == '__main__':
         print('位置：' + i['位置'])
         print('大小：' + i['大小'])
         print('形态：' + i['形态'])
+        print('腺管：' + i['腺管'])
         print('生长方向：' + i['生长方向'])
         print('边缘：' + i['边缘'])
         print('分布：' + i['分布'])
