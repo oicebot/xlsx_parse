@@ -159,25 +159,25 @@ def parse_sonography(intext=''):
             elif '呈' in detail_info and '形' in detail_info:
                 info_data['形态'] = detail_info
             #腺管扩张情况，寻找描述里有无乳腺导管扩张的相关描述，可能表述为腺管扩张，也可能表述为导管扩张
-            elif any(word in detail_info for word in ['腺管扩张','导管扩张','腺管局部扩张','导管局部扩张','局部扩张导管']): 
+            elif any(word in detail_info for word in ['腺管','导管']):  
                 info_data['腺管'] = detail_info
             #生长方向
             elif '生长' in detail_info:
                 info_data['生长方向'] = detail_info
             #分布
-            elif '分布' in detail_info and (not 'CDFI' in detail_info):
+            elif '分布' in detail_info and (not any( a in detail_info for a in ['CDFI' ,'钙化','状强回声','强回声','象限'] )):
                 info_data['分布'] = detail_info
             #边缘
-            elif any(a in detail_info for a in ['边缘','边界']) and (not any( a in detail_info for a in ['可见','CDFI','边缘型'])):
+            elif any(a in detail_info for a in ['边缘','边界']) and (not any( a in detail_info for a in ['可见','CDFI','边缘型','边缘为主','中央'])):
                 info_data['边缘'] = detail_info
             #后方回声
             elif any(word in detail_info for word in ['后方回声','后方伴声衰减','后方伴回声增强']): 
                 info_data['后方回声'] = detail_info
             #内部回声  
-            elif '内部' in detail_info and (not 'CDFI' in detail_info):
+            elif '内部' in detail_info and (not any( a in detail_info for a in ['CDFI' ,'血流','钙化','状强回声','强回声'] )):
                 info_data['内部回声'] = detail_info
             #钙化
-            elif any(a in detail_info for a in['钙化','状强回声',]):
+            elif any(a in detail_info for a in['钙化','状强回声','粗大强回声']):
                 info_data['钙化'] = detail_info
             #CDFI
             elif 'CDFI' in detail_info and '血流' in detail_info:
