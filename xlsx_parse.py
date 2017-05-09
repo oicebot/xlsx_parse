@@ -13,7 +13,7 @@ from openpyxl import Workbook, load_workbook
 import parse_functions # parse_sonography, parse_pathology
 
 table_title=['编号','姓名','年龄','住院号',
-             '描述','位置','大小','形态','生长方向',
+             '描述','位置','大小','形态','腺管','生长方向',
              '边缘','分布','内部回声','钙化','后方回声','CDFI'
              ]
              
