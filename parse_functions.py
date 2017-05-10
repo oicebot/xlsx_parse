@@ -40,7 +40,7 @@ def parse_pathology(intext='',div='$',replace_data='',outputemptyvalue=True):
         
     for detail_info in full_text:
         tokens = str(detail_info)
-        tokens = tokens.split("[")[1:]
+        tokens = tokens.split("【")[1:]
         
         if tokens == []:
             continue    #跳过完全不含有 [ 的字符串
@@ -54,7 +54,7 @@ def parse_pathology(intext='',div='$',replace_data='',outputemptyvalue=True):
 
         for tok in tokens:
             if tok:
-                info_token = tok.split("]")[0]
+                info_token = tok.split("】")[0]
                 tag = info_token.split(" ")[0]
                 if tag[-1].isdigit():
                     insert_pos = int(tag[-1])  #adjust insert point
