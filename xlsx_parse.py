@@ -137,7 +137,7 @@ if __name__ == '__main__':
     '''
             
     data1 = add_rows_to_table('描述数据', table_title, indata_sheet, col=8, mtd='sonography',)
-    data2 = add_rows_to_table('病理诊断', table2_title, indata_sheet, col=28, mtd='pathology', tstrange=10, )
+    data2 = add_rows_to_table('病理诊断', table2_title, indata_sheet, col=28, mtd='pathology', tstrange=0, )
 
     wb = Workbook()
     ws = wb.active

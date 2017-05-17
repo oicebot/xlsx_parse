@@ -21,7 +21,7 @@ def parse_operation(intext=''):
     #TODO：提取手术过程切了些什么
     
     
-def parse_pathology(intext='',div='$',replace_data='',outputemptyvalue=True):
+def parse_pathology(intext='',div='￥',replace_data='',outputemptyvalue=True):
     '''
     函数功能：提取分析结果是什么细胞
     接受4个参数： intext 是需处理的字符串本身， div 是分割多个诊断字符串的标记(可选)
@@ -54,7 +54,7 @@ def parse_pathology(intext='',div='$',replace_data='',outputemptyvalue=True):
 
         for tok in tokens:
             if tok:
-                info_token = tok.split("】")[0]
+                info_token = tok.split("·")[0]
                 tag = info_token.split(" ")[0]
                 if tag[-1].isdigit():
                     insert_pos = int(tag[-1])  #adjust insert point
