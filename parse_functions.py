@@ -81,9 +81,9 @@ def parse_sonography(intext=''):
     
     #所要提取信息的句子，同时包含'回声'   '可见'   '大小' 这三个词*
     #多个句子组成一个数组
-    tumor_info=[i for i in full_text if ('回声' in i and '见' in i and ('边缘' in i or '边界' in i)) ]
+    tumor_info=[i for i in full_text if ('回声' in i and '见' in i and ('边缘' in i or '边界' in i or 'CDFI' in i)) ]
     
-    #调试用，打印显示有几个句子符合上面的要求
+    #调试用，打印显示有几个句子符合上面的要求 这行代码的意思似乎是同时带有'回声'和'见'，以及'边缘'与'边界'之一的句子列入tumorinfo，但淋巴结和不按套路的肿块特殊描述不包括边缘，添加'CDFI'可能会好一些
     #i=0
     #for k in tumor_info:
     #    print i,k
